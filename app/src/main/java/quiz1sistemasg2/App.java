@@ -3,13 +3,37 @@
  */
 package quiz1sistemasg2;
 
+import java.util.Scanner;
+
 public class App {
     
 
     public static void main(String[] args) {
-        
-       
+        String tipodevehiculo= 0 ;
+        int horasestancia = 0 ;
+        int estudiante = 0;
 
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.println("cual es el tipo de vehiculo \n M. Moto \n C. Carro \n B. Bicicleta");
+        tipodevehiculo= (sc.nextLine());
+
+        sc.nextLine();
+
+        System.out.println("¿cuantas horas permaneció en el parqueadero?");
+        horasestancia= sc.nextInt();
+
+        sc.nextLine();
+
+        System.out.println("eres estudiante \n 1. Si \n 2. No ");
+
+        estudiante= sc.nextInt();
+
+        int resultadoValorHora = calcularValorHora(tipodevehiculo, horasestancia);
+        int resultadoDescuento = calcularDescuento(resultadoValorHora, estudiante, horasestancia);
+        int ResultadoFactura = calcularFactura(resultadoValorHora ,resultadoDescuento);
+
+        System.out.println( "el total es" + ResultadoFactura+ "con iva incluido ");
     }
 
     /*  Implemente una funcion llamada calcularValorHora que cumpla con las siguientes caracteristicas
@@ -21,7 +45,41 @@ public class App {
         * Controlar errores retornando -1
     */
     //------------------------------------------------------------------
-    
+    public static int calcularValorHora(String tipodevehiculo , int horasestancia ){
+        if (horasestancia <= 0) {
+            return -1;
+        }
+
+        int Montoinicial = 0;
+        int valorhoras=0;
+        if (horasestancia<3) {
+            Montoinicial = 0;
+        }
+        else{
+            Montoinicial = (horasestancia-3)*2000;
+        }
+        try {
+            switch (tipodevehiculo) {
+                case "M":
+                    valorhoras= (horasestancia * 3000+ Montoinicial);
+                    return valorhoras;
+                case "B":
+                    valorhoras= (horasestancia * 1000+ Montoinicial);
+                    return valorhoras;
+                case "C":
+                    valorhoras= (horasestancia * 5000 + Montoinicial);
+                    return valorhoras;
+
+            
+                default:
+            return -1;
+            }
+        } catch (Exception e) {
+            return -1;
+        }
+
+
+    }
 
 
     //------------------------------------------------------------------
@@ -37,6 +95,48 @@ public class App {
     */
     //------------------------------------------------------------------
     
+public static int calcularDescuento(int valorhoras, int estudiante , int horasestancia){
+    try {
+        if (horasestancia <= 0) {
+            return -1;
+        }
+
+        double descuentoadicional= 0;
+        double descuento = 0.3;
+        int descuentototal = 0;
+        switch (estudiante) {
+            case 1:
+                 descuentoadicional = 0.05;
+                 if (horasestancia < 4) {
+                    return descuentototal = (descuentoadicional)*valorhoras ;
+                   }
+                   else {
+                       return descuentototal = (descuentoadicional + descuento) * valorhoras ;
+                   }
+            case 2:
+                descuentoadicional = 0;
+                if (horasestancia < 4) {
+                    return descuentototal = (descuentoadicional)*valorhoras ;
+                   }
+                   else {
+                       return descuentototal = (descuentoadicional + descuento) * valorhoras ;
+                   }
+                break;
+        
+            default:
+             
+
+        }
+    }
+
+     catch (Exception e) {
+        return -1;
+    }
+}
+
+
+
+
 
 
     //------------------------------------------------------------------
@@ -50,7 +150,11 @@ public class App {
     */
     //------------------------------------------------------------------
     
+    public static int calcularFactura( int valorhoras , int descuentototal){
+        int factura= valorhoras-(valorhoras * descuentototal)+(valorhoras*0.19);
+        return factura;
 
+    }
 
     //------------------------------------------------------------------
 }
